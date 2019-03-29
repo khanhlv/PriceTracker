@@ -20,6 +20,8 @@ import com.pricetracker.entities.Product;
 import com.pricetracker.entities.shopee.Categories;
 import com.pricetracker.entities.shopee.Item;
 import com.pricetracker.entities.shopee.ItemObject;
+import com.pricetracker.enums.SourceSite;
+import com.pricetracker.utils.PrintUtils;
 
 public class ShopeeAction {
     private static final Logger logger = LoggerFactory.getLogger(ShopeeAction.class);
@@ -60,8 +62,10 @@ public class ShopeeAction {
         product.setImage(itemObject.item.image);
         product.setPrice(itemObject.item.price);
         product.setTitle(itemObject.item.name);
+        product.setSourceSite(SourceSite.SHOPEE);
+        product.setUrl("");
 
-        System.out.println(itemObject.item.name);
+        PrintUtils.printProduct(product);
 
         return product;
     }

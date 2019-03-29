@@ -1,5 +1,7 @@
 package com.pricetracker.entities;
 
+import com.pricetracker.enums.SourceSite;
+
 public class Product {
     private String id;
     private String title;
@@ -7,6 +9,7 @@ public class Product {
     private String price;
     private String image;
     private String url;
+    private SourceSite sourceSite;
 
     public String getId() {
         return id;
@@ -54,5 +57,13 @@ public class Product {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public SourceSite getSourceSite() {
+        return sourceSite;
+    }
+
+    public void setSourceSite(SourceSite sourceSite) {
+        this.sourceSite = sourceSite;
     }
 }

@@ -18,8 +18,10 @@ import com.pricetracker.entities.Product;
 import com.pricetracker.enums.SourceSite;
 import com.pricetracker.utils.PrintUtils;
 
-public class TikiAction {
-    private static final Logger logger = LoggerFactory.getLogger(TikiAction.class);
+public class AdayroiAction {
+    private static final Logger logger = LoggerFactory.getLogger(AdayroiAction.class);
+
+    // https://www.adayroi.com/dam-c35?q=:new&sort=new&page=1
 
     public List<Product> productList(String url) throws Exception {
         List<Product> productList = new ArrayList<>();
@@ -29,17 +31,17 @@ public class TikiAction {
                 .timeout(Const.TIMEOUT)
                 .get();
 
-        Elements itemElements = doc.select(".product-box-list .product-item");
+        Elements itemElements = doc.select(".product-list__container .product-item");
 
         for (Element item : itemElements) {
             Product product = new Product();
-            product.setId(StringUtils.trim(item.attr("data-id")));
-            product.setTitle(StringUtils.trim(item.attr("data-title")));
-            product.setBrand(StringUtils.trim(item.attr("data-brand")));
-            product.setPrice(StringUtils.trim(item.attr("data-price")));
-            product.setImage(StringUtils.trim(item.select("a[href] .product-image").attr("src")));
-            product.setUrl(StringUtils.trim(item.select("a[href]").attr("href")));
-            product.setSourceSite(SourceSite.TIKI);
+            product.setId(StringUtils.split(item.select(".product-item__couple-btn button.d-button--watch-fast").attr("data-offer-code"), "_")[0]);
+            product.setTitle(StringUtils.trim(item.select("a[href].product-item__info-title").text()));
+            product.setBrand(StringUtils.trim(item.select(".product-item__info .product-item__info-brand").text()));
+            product.setPrice(StringUtils.trim(item.select(".product-item__info-price .product-item__info-price-sale").text()));
+            product.setImage(StringUtils.trim(item.select("a[href].product-item__thumbnail img.default").attr("data-src")));
+            product.setUrl(StringUtils.trim(item.select("a[href].product-item__info-title").attr("href")));
+            product.setSourceSite(SourceSite.ADAYROI);
             productList.add(product);
 
             PrintUtils.printProduct(product);
@@ -66,6 +68,6 @@ public class TikiAction {
     }
 
     public static void main(String[] args) throws Exception {
-        new TikiAction().start("https://tiki.vn/dien-thoai-may-tinh-bang/c1789?order=newest", 10);
+        new AdayroiAction().start("https://www.adayroi.com/dam-c35?q=:new&sort=new", 1);
     }
 }
